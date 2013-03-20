@@ -1,13 +1,12 @@
 
-
 cls
 
 $dplyRSPSShell 	= "deployrsps.ps1"
 $dplyRSPSShellManifest = "manifest.rspsshell.xml"
 
 #https://mrp-us-bucket.s3.amazonaws.com/rs-psshell/DeployRSPSshell.ps1?Signature=s2YenSZCAyDpX%2FSKzFj5v3pJIwE%3D&Expires=1363789242&AWSAccessKeyId=068S8XY7J4FFK4111Y02
-$srcDply			= "https://mrp-us-bucket.s3.amazonaws.com/rs-psshell/$dplyRSPSShell"
-$srcDplyManifest	= "https://mrp-us-bucket.s3.amazonaws.com/rs-psshell/$dplyRSPSShellManifest"
+$srcDply		= "https://github.com/patrickmcclory/RightScalePowerShell/tree/master/PowershellAPI/RSPSShell/$dplyRSPSShell"
+$srcDplyManifest	= "https://github.com/patrickmcclory/RightScalePowerShell/tree/master/PowershellAPI/RSPSShell/$dplyRSPSShellManifest"
 
 $destFolder 	= "c:\RSTools\RSPSShell"
 
