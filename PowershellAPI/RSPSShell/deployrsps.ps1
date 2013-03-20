@@ -44,7 +44,8 @@ foreach($file in $files.file)
 	$srcFileName  = $file.NAME	
 	$thisFileSrcPath = $srcRepos.PATH + "/" + $srcFileName
 	
-	Write-Host "DPLYRSPSSHELL`: File - $thisFileName"
+	Write-Host "DPLYRSPSSHELL`: Src File - $srcFileName"
+	Write-Host "DPLYRSPSSHELL`: Src File URL - $thisFileSrcPath"
 		
 
 	$destFilePath = $localRSToolsDir + "\" + $srcFileName.Replace("/","\") 
@@ -101,3 +102,8 @@ foreach($file in $files.file)
 		Write-Host "DPLYRSPSSHELL`: Error downloading source - $_"
 	}
 }
+
+write-host "DPLYRSPSSHELL`:  Creating shortcut"
+. ".\create_RSPS_shortcut.ps1"
+
+write-host "DPLYRSPSSHELL`:  Finished"

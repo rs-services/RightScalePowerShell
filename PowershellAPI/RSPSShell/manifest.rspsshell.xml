@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RSPSSHELL>
-  <REPOSITORY NAME="GITHUB" PATH="https://github.com/patrickmcclory/RightScalePowerShell/tree/master/PowershellAPI/RSPSShell" />
+  <REPOSITORY NAME="GITHUB" PATH="https://raw.github.com/patrickmcclory/RightScalePowerShell/master/PowershellAPI/RSPSShell" />
   <FILES>
     <FILE NAME="rsps_profile.ps1" />
     <FILE NAME="create_RSPS_shortcut.ps1" />

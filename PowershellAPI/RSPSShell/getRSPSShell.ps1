@@ -1,13 +1,13 @@
 cls
 
-$gitURL = "https://github.com/patrickmcclory/RightScalePowerShell/blob/master/PowershellAPI/RSPSShell""
+$gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/PowershellAPI/RSPSShell"
 $dplyRSPSShell 	= "deployrsps.ps1"
 $dplyRSPSShellManifest = "manifest.rspsshell.xml"
 
 
 
-$srcDply		= $gitURL + "/" + $dplyRSPSShell"
-$srcDplyManifest	= $gitURL + "/" + $dplyRSPSShellManifest"
+$srcDply		= $gitURL + "/" + $dplyRSPSShell
+$srcDplyManifest	= $gitURL + "/" + $dplyRSPSShellManifest
 
 $destFolder 	= "c:\RSTools\RSPSShell"
 
@@ -22,6 +22,7 @@ $webclient = New-Object system.Net.WebClient
 try
 {
 		write-host "GETRSPSSHELL`: Downloading file - $dplyRSPSShell"
+                write-host "GETRSPSSHELL`: Src path - $srcDply"
 		$webclient.downloadfile($srcDply,$destDplyFile)
 }
 catch [System.Net.WebException]
@@ -40,6 +41,8 @@ catch [System.Net.WebException]
 try
 {
 		write-host "GETRSPSSHELL`: Downloading file - $dplyRSPSShellManifest"
+                write-host "GETRSPSSHELL`: Src path - $dplyRSPSShellManifest"
+
 		$webclient.downloadfile($srcDplyManifest,$destMfstFile)
 }
 catch [System.Net.WebException]
@@ -58,4 +61,4 @@ catch [System.Net.WebException]
 
 set-location $destFolder
 . .\$dplyRSPSShell
-. ".\create_RSPS_shortcut.ps1"
+

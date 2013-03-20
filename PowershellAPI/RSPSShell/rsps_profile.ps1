@@ -61,7 +61,7 @@ foreach($util in $utillist)
     . $util
   } 
 
-
+cls
 
 $colwidth = 80
 $spc = " "
