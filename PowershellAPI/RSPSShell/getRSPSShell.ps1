@@ -1,10 +1,13 @@
 cls
 
+$gitURL = "https://github.com/patrickmcclory/RightScalePowerShell/blob/master/PowershellAPI/RSPSShell""
 $dplyRSPSShell 	= "deployrsps.ps1"
 $dplyRSPSShellManifest = "manifest.rspsshell.xml"
 
-$srcDply		= "https://github.com/patrickmcclory/RightScalePowerShell/blob/master/PowershellAPI/RSPSShell/$dplyRSPSShell"
-$srcDplyManifest	= "https://github.com/patrickmcclory/RightScalePowerShell/blob/master/PowershellAPI/RSPSShell/deployrsps.ps1$dplyRSPSShellManifest"
+
+
+$srcDply		= $gitURL + "/" + $dplyRSPSShell"
+$srcDplyManifest	= $gitURL + "/" + $dplyRSPSShellManifest"
 
 $destFolder 	= "c:\RSTools\RSPSShell"
 
