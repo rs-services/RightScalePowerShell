@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RSPSSHELL>
+  <REPOSITORY NAME="AWS S3 MRP" PATH="https://mrp-us-bucket.s3.amazonaws.com/rs-psshell" />
+  <FILES>
+    <FILE NAME="rsps_profile.ps1" />
+    <FILE NAME="create_RSPS_shortcut.ps1" />
+    <FILE NAME="utils/rs_core.ps1" />
+    <FILE NAME="utils/rs_deployment.ps1" />
+    <FILE NAME="utils/rs_image.ps1" />
+    <FILE NAME="utils/rs_input.ps1" />
+    <FILE NAME="utils/rs_server.ps1" />
+    <FILE NAME="utils/rs_servertemplate.ps1" />
+    <FILE NAME="resources/RSPS.ico" />
+    <FILE NAME="resources/RightScale.netClient.dll" />
+    <FILE NAME="resources/Newtonsoft.Json.dll" />
+    <FILE NAME="resources/Newtonsoft.Json.xml" />
+  </FILES>
+</RSPSSHELL>
