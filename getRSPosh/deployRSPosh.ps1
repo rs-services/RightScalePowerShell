@@ -1,23 +1,4 @@
 cls
-#---START:  FUNCTIONS-------------------
-
-function Registry
-{
-param(
-		$path,
-		$name,
-		$value
-	  )
-
-  Set-ItemProperty -Path $path -Name $name -Value $value
-
-
-
-}
-
-#---END: FUNCTIONS-----------------------
-
-#TODO:  set path to shell download
 
 [xml]$xmlConfig = gc .\manifest.RSPOSH.xml
 
@@ -94,7 +75,12 @@ foreach($repo in $lstRepos)
 
 Set-Location $localRSToolsDir
 
-write-host "DPLYRSPOSH`:  Creating shortcut"
+#set env variable for RSPosh path
+Write-Host "Adding ENV variable - RSPoshPath - $localRSToolsDir"
+[Environment]::SetEnvironmentVariable("RSPoshPath", $localRSToolsDir, "Machine")
+
+
+write-host "DPLYRSPOSH`: Creating shortcut"
 . ".\createRSPSshortcut.ps1"
 
-write-host "DPLYRSPOSH`:  Finished"
+write-host "DPLYRSPOSH`: Finished"
