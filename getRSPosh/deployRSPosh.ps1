@@ -95,6 +95,6 @@ foreach($repo in $lstRepos)
 Set-Location $localRSToolsDir
 
 write-host "DPLYRSPOSH`:  Creating shortcut"
-. ".\create_RSPS_shortcut.ps1"
+. ".\createRSPSshortcut.ps1"
 
 write-host "DPLYRSPOSH`:  Finished"

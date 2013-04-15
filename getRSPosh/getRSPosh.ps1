@@ -1,11 +1,11 @@
 cls
 
 $gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/PowershellAPI/RSPSShell"
-$dplyRSPSShell 	= "deployrsps.ps1"
-$dplyRSPSShellManifest = "manifest.rspsshell.xml"
+$dplyRSPosh 	= "deployrsps.ps1"
+$dplyRSPoshManifest = "manifest.rsposh.xml"
 
-$srcDply		= $gitURL + "/" + $dplyRSPSShell
-$srcDplyManifest	= $gitURL + "/" + $dplyRSPSShellManifest
+$srcDply		= $gitURL + "/" + $dplyRSPosh
+$srcDplyManifest	= $gitURL + "/" + $dplyRSPoshManifest
 
 $destFolder 	= "c:\RSTools\RSPSShell"
 
@@ -58,4 +58,4 @@ catch [System.Net.WebException]
 
 
 set-location $destFolder
-. .\$dplyRSPSShell
+. .\$dplyRSPosh
