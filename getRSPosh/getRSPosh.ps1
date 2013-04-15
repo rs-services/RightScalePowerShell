@@ -1,6 +1,6 @@
 cls
 
-$gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/PowershellAPI/RSPSShell"
+$gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/getRSPosh"
 $dplyRSPosh 	= "deployrsps.ps1"
 $dplyRSPoshManifest = "manifest.rsposh.xml"
 
