@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RSPOSH>
+  <REPOSITORIES>
+    <REPOSITORY NAME="GITHUB" PATH="https://raw.github.com/patrickmcclory/RightScaleNetAPI/master/RightScale.netClient/Packages/RightScaleNetClient" >
+      <FILES>
+        <FILE NAME="Newtonsoft.Json.dll" />
+        <FILE NAME="Newtonsoft.Json.xml" />
+        <FILE NAME="RightScale.netClient.dll" />
+        <FILE NAME="RSPosh.dll" />
+      </FILES>
+    </REPOSITORY>
+    <REPOSITORY NAME="GITHUB" PATH="https://raw.github.com/patrickmcclory/RightScalePowerShell/master/PowershellAPI/RSPSShell" >
+      <FILES>
+        <FILE NAME="rsps_profile.ps1" />
+        <FILE NAME="create_RSPS_shortcut.ps1" />
+      </FILES>
+    </REPOSITORY>
+  </REPOSITORIES>
+</RSPOSH>
