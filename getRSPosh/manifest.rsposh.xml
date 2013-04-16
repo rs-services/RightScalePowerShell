@@ -13,6 +13,7 @@
       <FILES>
         <FILE NAME="rsps_profile.ps1" />
         <FILE NAME="createRSPSshortcut.ps1" />
+	<FILE NAME="rsps.ico" />
       </FILES>
     </REPOSITORY>
   </REPOSITORIES>
