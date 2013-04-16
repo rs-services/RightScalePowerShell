@@ -58,11 +58,11 @@ foreach($repo in $lstRepos)
 	{
 		if($_.Exception.InnerException)
 		{
-			Write-Host "DPLYRSPOSH`: Error downloading source - $($_.exception.innerexception.message)"
+			Write-Error "DPLYRSPOSH`: Error downloading source - $($_.exception.innerexception.message)"
 		}
 		else
 		{
-			Write-Host "DPLYRSPOSH`: Error downloading source - $_"
+			Write-Error "DPLYRSPOSH`: Error downloading source - $_"
 		}
 	
 	}
