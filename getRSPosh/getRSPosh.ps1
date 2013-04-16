@@ -1,16 +1,14 @@
 cls
 
 $gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/getRSPosh"
-$dplyRSPosh 	= "deployrsps.ps1"
+$dplyRSPosh 	= "deployRSPosh.ps1"
 $dplyRSPoshManifest = "manifest.rsposh.xml"
 
-$srcDply		= $gitURL + "/" + $dplyRSPosh
+$srcDply			= $gitURL + "/" + $dplyRSPosh
 $srcDplyManifest	= $gitURL + "/" + $dplyRSPoshManifest
-
-$destFolder 	= "c:\RSTools\RSPSShell"
-
-$destDplyFile 		= "$destFolder\$dplyRSPSShell"
-$destMfstFile 		= "$destFolder\$dplyRSPSShellManifest"
+$destFolder   		= "c:\RSTools\RSPosh"
+$destDplyFile 		= "$destFolder\$dplyRSPosh"
+$destMfstFile 		= "$destFolder\$dplyRSPoshManifest"
 
 
 if(!(Test-Path $destFolder)){New-Item -Path $destFolder -ItemType directory -Force}
@@ -19,7 +17,7 @@ $webclient = New-Object system.Net.WebClient
 
 try
 {
-	write-host "GETRSPOSH`: Downloading file - $dplyRSPSShell"
+	write-host "GETRSPOSH`: Downloading file - $dplyRSPosh"
     write-host "GETRSPOSH`: Src path - $srcDply"
 	$webclient.downloadfile($srcDply,$destDplyFile)
 }
