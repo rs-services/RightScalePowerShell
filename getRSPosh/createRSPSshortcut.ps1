@@ -8,7 +8,7 @@
 #link props
 $psPath 	= 'c:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
 $startFolder	= "c:\RSTools\RSPosh"
-$iconLocation 	= "c:\RSTools\RSPosh\Resources\RSPS.ico"
+$iconLocation 	= "c:\RSTools\RSPosh\RSPS.ico"
 $args 		=  '-noexit -file c:\RSTools\RSPosh\rsps_profile.ps1'
 $shortCutName 	= "RSPosh.lnk"
 $linkPath       = Join-Path ([Environment]::GetFolderPath("Desktop")) $shortCutName
