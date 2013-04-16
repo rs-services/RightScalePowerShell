@@ -1,0 +1,10 @@
+This sample will create deployments and severs from a sample model configuration file.  The sample model file will create 2 deployments,  1 is a 4 Tier deployment with a load balancer, database server, application server and a web server the other one is a AIO (All in One) Deployment and will create 2 AIO servers.  The cloud id and server templates are specific to the account being used and will need to be valid for that account.
+
+Change the sample configuration file in the samples folder - DeploymentModels.xml with your account information or leave the values blank to be prompted for the account information.
+
+
+Changes to DeploymentModels.xml
+--------------------------------------
+1,  <RIGHTSCALE  ACCOUNT="YourAccount"  USERNAME="YourUsername" PASSWORD="YourPassword" />  -leave values blank to be prompted
+
+2.  Server Template id's and cloud id's through the rest of the file will need to be valid for your account.

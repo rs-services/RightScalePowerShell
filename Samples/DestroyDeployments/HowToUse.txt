@@ -1,0 +1,1 @@
+This sample will destroy Deployments where the Deployment name matches the passed parameter.  You will be prompted for filter, accountid, username and password.  After getting the Deployments that match the filter you will be prompted to confirm destroying.
