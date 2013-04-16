@@ -17,8 +17,10 @@ $webclient = New-Object system.Net.WebClient
 
 try
 {
-	write-host "GETRSPOSH`: Downloading file - $dplyRSPosh"
-    write-host "GETRSPOSH`: Src path - $srcDply"
+	write-host "GETRSPOSH`: Downloading deploy RSPosh script - $dplyRSPosh"
+    write-host "GETRSPOSH`: Source path - $srcDply"
+	write-host "GETRSPOSH`: Destination path - $destDplyFile"
+	
 	$webclient.downloadfile($srcDply,$destDplyFile)
 }
 catch [System.Net.WebException]
@@ -36,8 +38,9 @@ catch [System.Net.WebException]
 
 try
 {
-		write-host "GETRSPOSH`: Downloading file - $dplyRSPSShellManifest"
-                write-host "GETRSPOSH`: Src path - $dplyRSPSShellManifest"
+		write-host "GETRSPOSH`: Downloading RSPosh manifest - $dplyRSPoshManifest"
+        write-host "GETRSPOSH`: Source path - $srcDplyManifest"
+		write-host "GETRSPOSH`: Destination path - $destMfstFile"
 
 		$webclient.downloadfile($srcDplyManifest,$destMfstFile)
 }

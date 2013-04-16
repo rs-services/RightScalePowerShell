@@ -76,7 +76,7 @@ foreach($repo in $lstRepos)
 Set-Location $localRSToolsDir
 
 #set env variable for RSPosh path
-Write-Host "Adding ENV variable - RSPoshPath - $localRSToolsDir"
+Write-Host "DPLYRSPOSH`: Adding ENV variable - RSPoshPath - $localRSToolsDir"
 [Environment]::SetEnvironmentVariable("RSPoshPath", $localRSToolsDir, "Machine")
 
 
