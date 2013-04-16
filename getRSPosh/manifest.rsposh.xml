@@ -9,7 +9,7 @@
         <FILE NAME="RSPosh.dll" />
       </FILES>
     </REPOSITORY>
-    <REPOSITORY NAME="GITHUB" PATH="https://raw.github.com/patrickmcclory/RightScalePowerShell/master/getRSPosh" >
+    <REPOSITORY NAME="GITHUB" PATH="https://github.com/patrickmcclory/RightScalePowerShell/raw/master/getRSPosh" >
       <FILES>
         <FILE NAME="rsps_profile.ps1" />
         <FILE NAME="createRSPSshortcut.ps1" />
