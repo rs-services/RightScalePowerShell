@@ -12,7 +12,7 @@
     <REPOSITORY NAME="GITHUB" PATH="https://raw.github.com/patrickmcclory/RightScalePowerShell/master/getRSPosh" >
       <FILES>
         <FILE NAME="rsps_profile.ps1" />
-        <FILE NAME="create_RSPS_shortcut.ps1" />
+        <FILE NAME="createRSPSshortcut.ps1" />
       </FILES>
     </REPOSITORY>
   </REPOSITORIES>
