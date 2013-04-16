@@ -1,8 +1,4 @@
 ﻿
-
-
-
-
 #create desktop short cut for RS PS session
 
 #link props

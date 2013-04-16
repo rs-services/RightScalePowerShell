@@ -25,7 +25,6 @@ Function Set-RSConsole
  $host.PrivateData.VerboseForegroundColor = "Yellow" 
  
  $bufferSize = new-object System.Management.Automation.Host.Size 300,500
- #$windowsize = new-object System.Management.Automation.Host.Size 300,80
 
  $host.UI.RawUI.BufferSize = $bufferSize
 
@@ -37,31 +36,41 @@ Function Set-RSConsole
 
 }
 
-Set-Location c:\RSTools\RSPSShell
+Set-Location c:\RSTools\RSPosh
 
-$localRSToolsDir = "c:\RSTools\RSPSshell"
-$rsDLLPath = $localRSToolsDir + "\resources\" + "RightScale.netClient.dll"
+$localRSToolsDir = "c:\RSTools\RSPosh"
+$rsDLLPath = $localRSToolsDir + "\" + "RSPosh.dll"
+
 #RS console settings
 set-RSConsole
 
-# Load RS NET Client
-Add-Type -Path $rsDLLPath
+# Load RSPosh DLL
+Write-Host "Loading RSPosh DLL - $rsDLLPath"
+
+try
+{
+  Import-Module $rsDLLPath -ErrorAction SilentlyContinue
+  
+  if(!$?)
+  {
+    Write-Host "Could not load RSPosh DLL - $rsDLLPath" -ForegroundColor red
+	Write-Host $error[0]
+	
+	exit
+  }
+}
+catch
+{
+  Write-Host "Could not load RSPosh DLL - $rsDLLPath" -ForegroundColor red
+  Write-Host "Verify path file exists - $rsDLLPath" -ForegroundColor Red
+  Write-Host $_ -ForegroundColor Red
+  exit
+}
+
 
 $version = [System.Diagnostics.FileVersionInfo]::GetVersionInfo($rsDLLPath).FileVersion
 
-
-
-#import modules
-[string]$utils = get-childItem -path .\utils -exclude loadutils.ps1,list.ps1
-
-$utillist = $utils.split(" ") 
-
-foreach($util in $utillist) 
-  { 
-    . $util
-  } 
-
-cls
+#cls
 
 $colwidth = 80
 $spc = " "
