@@ -1,6 +1,6 @@
-﻿$email = "patrick@rightscale.com"    # The Email Address for your RightScale User in the Dashboard
-$passwd = "fU4reqUD!"   # Your User's password
-$account = "58765"  # Account ID, Easily Obtained from navigation in the Dashboard
+﻿$email = "curt@rightscale.com"    # The Email Address for your RightScale User in the Dashboard
+$passwd = "My!m2fsx"   # Your User's password
+$account = "7954"  # Account ID, Easily Obtained from navigation in the Dashboard
 
 $postURL = "https://my.rightscale.com/api/session"
 $stringToPost = "email=$email&password=$passwd&account_href=/api/accounts/$account"

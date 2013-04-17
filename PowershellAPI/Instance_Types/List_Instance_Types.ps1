@@ -1,6 +1,8 @@
 ﻿#get cookie container from authentication $cookieContainer
 
-$cloudID = "cloudID"
+$cloudID = "6"
+
+write-host "cookie $cookieContainer"
 
 $listInstanceTypesRequest = [System.Net.WebRequest]::Create("https://my.rightscale.com/api/clouds/$cloudID/instance_types.xml")
 $listInstanceTypesRequest.Method = "GET"
