@@ -1,8 +1,8 @@
 param(
-	[Parameter(Mandatory=$true)]$filter,
 	[Parameter(Mandatory=$true)]$accountID,
 	[Parameter(Mandatory=$true)]$username,
-	[Parameter(Mandatory=$true)][Security.SecureString]$password
+	[Parameter(Mandatory=$true)][Security.SecureString]$password,
+    [Parameter(Mandatory=$true)]$namefilter
 )
 
 
