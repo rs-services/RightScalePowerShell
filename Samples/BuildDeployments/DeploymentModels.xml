@@ -25,15 +25,15 @@
           <TAG SCOPE="SERVER" PREFIX="dp"  TAGNAME="dplysrvtag1"  VALUE="dplysrvtagvalue1" />
         </TAGS>
 	<SERVERS>
-	  <SERVER MODELID="1" NAME="ModDplySrvLB01" TIER="LoadBalancer" SERVERTEMPLATE="292788001" LAUNCH="FALSE" LAUNCHWAIT="0" DESCRIPTION="Model Deployment 4T LoadBalancer" >
+	  <SERVER MODELID="1" NAME="01-ModDplySrvLB01" TIER="LoadBalancer" SERVERTEMPLATE="292788001" LAUNCH="TRUE" LAUNCHWAIT="0" DESCRIPTION="Model Deployment 4T LoadBalancer" >
 	    <TAGS>
               <TAG SCOPE="SERVER" PREFIX="App"  TAGNAME="srvtag1"  VALUE="srvtagvalue1" />
               <TAG SCOPE="SERVER" PREFIX="App"  TAGNAME="srvtag2"  VALUE="srvtagvalue2" />
             </TAGS>
            </SERVER>
-	  <SERVER MODELID="2" NAME="ModDplySrvApp01" TIER="Application" SERVERTEMPLATE="290029001" LAUNCH="TRUE" LAUNCHWAIT="3" DESCRIPTION="Model Deployment 4T Windows App Server"  />
-	  <SERVER MODELID="3"  NAME="ModDplySrvDB01" TIER="Database" SERVERTEMPLATE="291393001" LAUNCH="FALSE" LAUNCHWAIT="0" DESCRIPTION="Model Deployment 4T SQL Database"  />	
-	  <SERVER MODELID="4"  NAME="ModDplySrvWeb01" TIER="Web" SERVERTEMPLATE="291395001" LAUNCH="FALSE" LAUNCHWAIT="2,3" DESCRIPTION="Model Deployment 4T IIS Web Server"  />	
+	  <SERVER MODELID="2" NAME="03-ModDplySrvApp01" TIER="Application" SERVERTEMPLATE="290029001" LAUNCH="TRUE" LAUNCHWAIT="3" DESCRIPTION="Model Deployment 4T Windows App Server"  />
+	  <SERVER MODELID="3"  NAME="02-ModDplySrvDB01" TIER="Database" SERVERTEMPLATE="291393001" LAUNCH="FALSE" LAUNCHWAIT="0" DESCRIPTION="Model Deployment 4T SQL Database"  />	
+	  <SERVER MODELID="4"  NAME="04-ModDplySrvWeb01" TIER="Web" SERVERTEMPLATE="291395001" LAUNCH="FALSE" LAUNCHWAIT="2,3" DESCRIPTION="Model Deployment 4T IIS Web Server"  />	
   	</SERVERS>
     </DEPLOYMENT>
     <DEPLOYMENT  ENV="DEV" NAME="ModelDeployment-AIO" CLOUDID="2178" DESCRIPTION="Scripted Deployment AIO" >
