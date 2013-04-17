@@ -51,7 +51,11 @@ if($session -match "Connected")
     $dplysFiltered = $deploys | ?{$_.name -match "Model"} 
     
     write-host "Found $($dplysFiltered.count) Deployments"
-    $dplysFiltered | %{write-host "Deployment`: $($_.name)"}
+    write-host "-----------------------------------------------"
+    $dplysFiltered | %{
+      write-host "Deployment`: $($_.name)"
+      write-host "`t($_.servers | select name,state)"
+    }
     
     #Confirm destroying
     $choiceYes = New-Object System.Management.Automation.Host.ChoiceDescription "&Yes", "Answer Yes"
