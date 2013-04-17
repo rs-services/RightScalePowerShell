@@ -31,7 +31,7 @@
               <TAG SCOPE="SERVER" PREFIX="App"  TAGNAME="srvtag2"  VALUE="srvtagvalue2" />
             </TAGS>
            </SERVER>
-	  <SERVER MODELID="2" NAME="ModDplySrvApp01" TIER="Application" SERVERTEMPLATE="290029001" LAUNCH="FALSE" LAUNCHWAIT="3" DESCRIPTION="Model Deployment 4T Windows App Server"  />
+	  <SERVER MODELID="2" NAME="ModDplySrvApp01" TIER="Application" SERVERTEMPLATE="290029001" LAUNCH="TRUE" LAUNCHWAIT="3" DESCRIPTION="Model Deployment 4T Windows App Server"  />
 	  <SERVER MODELID="3"  NAME="ModDplySrvDB01" TIER="Database" SERVERTEMPLATE="291393001" LAUNCH="FALSE" LAUNCHWAIT="0" DESCRIPTION="Model Deployment 4T SQL Database"  />	
 	  <SERVER MODELID="4"  NAME="ModDplySrvWeb01" TIER="Web" SERVERTEMPLATE="291395001" LAUNCH="FALSE" LAUNCHWAIT="2,3" DESCRIPTION="Model Deployment 4T IIS Web Server"  />	
   	</SERVERS>

@@ -1,5 +1,5 @@
 
-Set-Location 'C:\Users\michael\Documents\GitHub\RightScaleNetAPI\RightScale.netClient\Samples\BuildDeployments'
+
 #-------------------------------------------------------------
 #FUNCTONS
 #-------------------------------------------------------------
@@ -28,13 +28,15 @@ cls
 
 Write-Host "Loading RightScale cmdlets"
 
-$rsPoshDllPath = 'C:\Users\michael\Documents\GitHub\RightScaleNetAPI\RightScale.netClient\RSPosh\bin\Debug\RSPosh.dll'
+$rsPoshDllPath = 'c:\RSTools\RSPosh\RSPosh.dll'
 
 import-module $rsPoshDllPath
 
 $rsModelFile = "deploymentModels.xml"
 
-[xml]$mdlBuild  = gc .\$rsModelFile
+#[xml]$mdlBuild  = gc .\$rsModelFile
+[xml]$mdlBuild  = gc C:\Users\michael\Documents\GitHub\RightScalePowerShell\Samples\BuildDeployments\$rsModelFile
+
 if(!$mdlBuild){Write-Host "Error loading model file - $rsModelFIle";exit 1}
 
 #get rs creds
@@ -43,12 +45,14 @@ $rsAccountUserName = $mdlBuild.RSMODEL.RIGHTSCALE.Username
 $rsAccountPwd = $mdlBuild.RSMODEL.RIGHTSCALE.password
 
 #arrays to hold tag values
-$hshInputs = @{}
+$hshDplyInputs = @{}
+$hshSrvInputs = @{}
 $hshDplyTags = @{}
 $hshSrvTags = @{}
 
 #get default inputs
-$rsDefInputs = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.INPUTS.INPUT
+$rsDefDplyInputs = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.INPUTS.INPUT | ?{$_.scope -eq "DEPLOYMENT"}
+$rsDefSrvInputs = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.INPUTS.INPUT | ?{$_.scope -eq "SERVER"}
 $rsDefDplyTags = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.TAGS.TAG | ?{$_.scope -eq "DEPLOYMENT"}
 $rsDefSrvTags = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.TAGS.TAG | ?{$_.scope -eq "SERVER"}
 
@@ -58,7 +62,8 @@ if([String]::IsNullOrEmpty($rsAccountUserName)){$rsAccountUserName = Read-Host "
 if([String]::IsNullOrEmpty($rsAccountPwd)){$rsAccountPwd = Read-Host "RightScale Password" -AsSecureString}
 
 #add default inputs and tags
-if($rsDefInputs){$rsDefInputs | %{$hshInputs.add($_.name,$_.value)}}
+if($rsDefDplyInputs){$rsDefDplyInputs | %{$hshDplyInputs.add($_.name,$_.value)}}
+if($rsDefSrvInputs){$rsDefSrvInputs | %{$hshSrvInputs.add($_.name,$_.value)}}
 if($rsDefDplyTags){$rsDefDplyTags | %{$hshDplyTags.add(($_.prefix + "`:" + $_.tagname),$_.value)}}
 if($rsDefSrvTags){$rsDefSrvTags | %{$hshSrvTags.add(($_.prefix + "`:" + $_.tagname),$_.value)}}
 
@@ -80,9 +85,23 @@ if($session -match "Connected")
 		$dplyInputs 	= $deployment.inputs.input
 		$dplyTags 		= $deployment.tags.tag | ?{$_.scope -eq "DEPLOYMENT"}
 		
-   		#add / update tag and input list
-		if($dplyInputs){$dplyInputs | %{if($hshInputs.Contains($_.name)){$hshInputs.Remove($_.name)}; $hshInputs.Add($_.name,$_.value)}}
-		
+   		#build input hash
+		if($dplyInputs.count -gt 0)
+        {
+          foreach($dplyInput in $dplyInputs)
+          {
+            if($hshDplyInputs.Contains($dplyInput.name))
+            {
+              $hshDplyInputs.Remove($dplyInput.name)
+              $hshDplyInputs.Add($dplyInput.name,$dplyInput.value)
+            }
+            else
+            {
+              $hshDplyInputs.Add($dplyInput.name,$dplyInput.value)
+            }
+          }
+		}
+        
 		#build deployment tags hash
 		if($dplyTags.count -gt 0)
         {
@@ -155,13 +174,26 @@ if($session -match "Connected")
 		#--------------------------------
 		
 		#build string array of input values
-		$arrDplyInputs = @()
-        $hshInputs.getenumerator() | %{$_} | ?{$_.name} | %{$val = $_.name + ":" + $_.value;$arrDplyInputs += $val}
+        if($hshDplyInputs)
+        {
+		  $arrDplyInputs = @()
+          $hshDplyInputs.getenumerator() | %{$_} | ?{$_.name} | %{$val = $_.name + ":" + $_.value;$arrDplyInputs += $val}
 
-		#set deployments inputs
-		Write-Host "Setting server input values"
-		if($arrDplyInputs){$resSetInputs = Set-RSServerInputs -serverid $newDplyID -inputs $arrDplyInputs}
-		
+		  #set deployments inputs
+		  Write-Host "Setting server input values"
+		  if($arrDplyInputs)
+          {
+            try
+            {
+              $resSetInputs = Set-RSServerInputs -serverid $newDplyID -inputs $arrDplyInputs
+            }
+            catch
+            {
+              write-host "Error setting inputs - $_"
+            }
+        
+          }
+		}
 		#endregion deployment creation
 		
        	#region server creation	
@@ -183,7 +215,7 @@ if($session -match "Connected")
 			
 			#add / update inputs and tags
 			#if($srvInputs.count -gt 0){$srvInputs | %{if($hshInputs.Contains($_.name)){$hshInputs.Remove($_.name)}; $hshInputs.Add($_.name,$_.value)}}
-            if($srvInputs.count -gt 0){$srvInputs | %{$srvInputs.Add($_.name,$_.value)}}
+            #if($srvInputs.count -gt 0){$srvInputs | %{$srvInputs.Add($_.name,$_.value)}}
             
             #build server tags hash
 			if($srvTags.count -gt 0)
@@ -200,6 +232,25 @@ if($session -match "Connected")
                 else
                 {
                   $hshSrvTags.Add($thisKeyName,$srvTag.value)
+                }
+              }		
+            }
+            
+            #build server input hash
+            if($srvInputs.count -gt 0)
+            {
+              foreach($srvInput in $srvInputs)
+              {
+                $thisKeyName = $srvInput.name
+                
+                if($hshSrvInputs.Contains($thisKeyName))
+                {
+                  $hshSrvInputs.Remove($thisKeyName)
+                  $hshSrvInputs.Add($thisKeyName,$srvInput.value)
+                }
+                else
+                {
+                  $hshSrvInputs.Add($thisKeyName,$srvInput.value)
                 }
               }		
             }
@@ -221,17 +272,26 @@ if($session -match "Connected")
 			$newServerIDs += $newServerObj
 		
 			#build string array of input values
-			if($srvInputs)
+			if($hshSrvInputs)
             {
               $arrSrvInputs = @()
-              $srvInputs.getenumerator() | %{$_} | ?{$_.name} | %{            
+              $hshSrvInputs.getenumerator() | %{$_} | ?{$_.name} | %{            
             	$val = $_.name + ":" + $_.value	
 				$arrSrvInputs += $val            
                }
                
-              #set inputs
-			  Write-Host "Setting server input values"
-			  if($arrSrvInputs){$rsSetInputs = Set-RSServerInputs -serverid $newServerID -inputs $arrSrvInputs}  
+              #set inputs			  
+			  if($arrSrvInputs)
+              {
+                try
+                {
+                  $rsSetInputs = Set-RSServerInputs -serverid $newServerID -inputs $arrSrvInputs
+                }
+                catch
+                {
+                  write-host "Error setting inputs - $($_)"
+                }
+              }  
             }		
 			
 			
