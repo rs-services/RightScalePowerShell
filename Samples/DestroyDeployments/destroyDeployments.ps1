@@ -6,6 +6,14 @@ param(
 )
 
 
+cls
+
+Write-Host "Loading RightScale cmdlets"
+
+$rsPoshDllPath = 'c:\RSTools\RSPosh\RSPosh.dll'
+
+import-module $rsPoshDllPath
+
 #-------------------------------------------------------------
 #FUNCTONS
 #-------------------------------------------------------------
