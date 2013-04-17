@@ -34,8 +34,7 @@ import-module $rsPoshDllPath
 
 $rsModelFile = "deploymentModels.xml"
 
-#[xml]$mdlBuild  = gc .\$rsModelFile
-[xml]$mdlBuild  = gc C:\Users\michael\Documents\GitHub\RightScalePowerShell\Samples\BuildDeployments\$rsModelFile
+[xml]$mdlBuild  = gc .\$rsModelFile
 
 if(!$mdlBuild){Write-Host "Error loading model file - $rsModelFIle";exit 1}
 
