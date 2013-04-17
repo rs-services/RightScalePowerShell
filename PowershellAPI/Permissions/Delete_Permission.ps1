@@ -1,6 +1,6 @@
 ﻿#get cookie container from authentication $cookieContainer
 
-$permissionId = "848230"
+$permissionId = ""
 
 $webRequest = [System.Net.WebRequest]::Create("https://my.rightscale.com/api/permissions/$permissionId.xml")
 $webRequest.Method = "DELETE"
