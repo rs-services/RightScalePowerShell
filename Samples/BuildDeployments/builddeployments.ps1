@@ -28,7 +28,7 @@ cls
 
 Write-Host "Loading RightScale cmdlets"
 
-$rsPoshDllPath = 'c:\RSTools\RSPosh\RSPS.dll'
+$rsPoshDllPath = 'c:\RSTools\RSPS\RSPS.dll'
 
 import-module $rsPoshDllPath
 
