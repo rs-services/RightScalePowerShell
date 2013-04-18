@@ -1,8 +1,8 @@
 cls
 
-$gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/getRSPosh"
-$dplyRSPosh 	= "deployRSPosh.ps1"
-$dplyRSPoshManifest = "manifest.rsposh.xml"
+$gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/getRSPS"
+$dplyRSPS 	= "deployRSPS.ps1"
+$dplyRSPSManifest = "manifest.rsps.xml"
 
 $srcDply			= $gitURL + "/" + $dplyRSPS
 $srcDplyManifest	= $gitURL + "/" + $dplyRSPSManifest
@@ -17,9 +17,9 @@ $webclient = New-Object system.Net.WebClient
 
 try
 {
-	write-host "GETRSPOSH`: Downloading deploy RSPS script - $dplyRSPosh"
-    write-host "GETRSPOSH`: Source path - $srcDply"
-	write-host "GETRSPOSH`: Destination path - $destDplyFile"
+	write-host "GETRSPS`: Downloading deploy RSPS script - $dplyRSPS"
+    write-host "GETRSPS`: Source path - $srcDply"
+	write-host "GETRSPS`: Destination path - $destDplyFile"
 	
 	$webclient.downloadfile($srcDply,$destDplyFile)
 }
@@ -27,20 +27,20 @@ catch [System.Net.WebException]
 {
 		if($_.Exception.InnerException)
 		{
-			Write-Host "GETRSPOSH`: Error downloading source - $($_.exception.innerexception.message)"
+			Write-Host "GETRSPS`: Error downloading source - $($_.exception.innerexception.message)"
 		}
 		else
 		{
-			Write-Host "GETRSPOSH`: Error downloading source - $_"
+			Write-Host "GETRSPS`: Error downloading source - $_"
 		}
 	
 }
 
 try
 {
-		write-host "GETRSPOSH`: Downloading RSPS manifest - $dplyRSPoshManifest"
-        write-host "GETRSPOSH`: Source path - $srcDplyManifest"
-		write-host "GETRSPOSH`: Destination path - $destMfstFile"
+		write-host "GETRSPS`: Downloading RSPS manifest - $dplyRSPoshManifest"
+        write-host "GETRSPS`: Source path - $srcDplyManifest"
+		write-host "GETRSPS`: Destination path - $destMfstFile"
 
 		$webclient.downloadfile($srcDplyManifest,$destMfstFile)
 }
@@ -48,11 +48,11 @@ catch [System.Net.WebException]
 {
 		if($_.Exception.InnerException)
 		{
-			Write-Host "GETRSPOSH`: Error downloading source - $($_.exception.innerexception.message)"
+			Write-Host "GETRSPS`: Error downloading source - $($_.exception.innerexception.message)"
 		}
 		else
 		{
-			Write-Host "GETRSPOSH`: Error downloading source - $_"
+			Write-Host "GETRSPS`: Error downloading source - $_"
 		}
 	
 }
