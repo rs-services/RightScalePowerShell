@@ -1,9 +1,9 @@
 cls
 
-[xml]$xmlConfig = gc .\manifest.RSPOSH.xml
+[xml]$xmlConfig = gc .\manifest.RSPS.xml
 
 $lstRepos = $xmlConfig.RSPOSH.REPOSITORIES.REPOSITORY
-$localRSToolsDir = "c:\RSTools\RSPosh"
+$localRSToolsDir = "c:\RSTools\RSPS"
 
 if(!$(Test-Path $localRSToolsDir)){New-Item -Path $localRSToolsDir -ItemType directory}
 
@@ -15,8 +15,8 @@ foreach($repo in $lstRepos)
 	$srcReposName = $repo.NAME
 	$srcReposPath = $repo.PATH
 	
-	Write-Host "DPLYRSPOSH`: Repository - $srcReposName"
-	Write-Host "DPLYRSPOSH`: Repository path - $srcReposPath"
+	Write-Host "DPLYRSPS`: Repository - $srcReposName"
+	Write-Host "DPLYRSPS`: Repository path - $srcReposPath"
 	
 	$files = $repo.files
 
@@ -25,8 +25,8 @@ foreach($repo in $lstRepos)
 	  $srcFileName  = $file.NAME	
 	  $thisFileSrcPath = $srcReposPath + "/" + $srcFileName
 	
-  	  Write-Host "DPLYRSPOSH`: Src File - $srcFileName"
-	  Write-Host "DPLYRSPOSH`: Src File URL - $thisFileSrcPath"		
+  	  Write-Host "DPLYRSPS`: Src File - $srcFileName"
+	  Write-Host "DPLYRSPS`: Src File URL - $thisFileSrcPath"		
 
 	  $destFilePath = $localRSToolsDir + "\" + $srcFileName.Replace("/","\") 
 		
@@ -35,7 +35,7 @@ foreach($repo in $lstRepos)
 	
 		$destFolderPath = $destFilePath.Substring(0,($destFilePath.LastIndexOf("\")))
 
-		Write-Host "DPLYRSPOSH`: Checking if destination folder exists - $destFolderPath"
+		Write-Host "DPLYRSPS`: Checking if destination folder exists - $destFolderPath"
 		if(!(test-path $destFolderPath)){New-Item -Path $destFolderPath -ItemType directory}
 	}
 	 else
@@ -44,13 +44,13 @@ foreach($repo in $lstRepos)
 		$destFilePath	= $localRSToolsDir + "\" + $srcFileName	
 	 }
 	
-	Write-Host "DPLYRSPOSH`: Destination folder - $destFolderPath"
-	Write-Host "DPLYRSPOSH`: Destination file path - $destFilePath"
+	Write-Host "DPLYRSPS`: Destination folder - $destFolderPath"
+	Write-Host "DPLYRSPS`: Destination file path - $destFilePath"
 	
 	try
 	{
-		Write-Host "DPLYRSPOSH`: Getting source - $srcFileName"
-		Write-Host "DPLYRSPOSH`: Destination - $destfilepath"
+		Write-Host "DPLYRSPS`: Getting source - $srcFileName"
+		Write-Host "DPLYRSPS`: Destination - $destfilepath"
 		
 		$wc.downloadfile($thisFileSrcPath,$destfilepath)
 	}
@@ -58,17 +58,17 @@ foreach($repo in $lstRepos)
 	{
 		if($_.Exception.InnerException)
 		{
-			Write-Error "DPLYRSPOSH`: Error downloading source - $($_.exception.innerexception.message)"
+			Write-Error "DPLYRSPS`: Error downloading source - $($_.exception.innerexception.message)"
 		}
 		else
 		{
-			Write-Error "DPLYRSPOSH`: Error downloading source - $_"
+			Write-Error "DPLYRSPS`: Error downloading source - $_"
 		}
 	
 	}
 	catch
 	{
-		Write-Host "DPLYRSPOSH`: Error downloading source - $_"
+		Write-Host "DPLYRSPS`: Error downloading source - $_"
 	}
   }
 }
@@ -76,11 +76,11 @@ foreach($repo in $lstRepos)
 Set-Location $localRSToolsDir
 
 #set env variable for RSPosh path
-Write-Host "DPLYRSPOSH`: Adding ENV variable - RSPoshPath - $localRSToolsDir"
-[Environment]::SetEnvironmentVariable("RSPoshPath", $localRSToolsDir, "Machine")
+Write-Host "DPLYRSPS`: Adding ENV variable - RSPSPath - $localRSToolsDir"
+[Environment]::SetEnvironmentVariable("RSPSPath", $localRSToolsDir, "Machine")
 
 
-write-host "DPLYRSPOSH`: Creating shortcut"
+write-host "DPLYRSPS`: Creating shortcut"
 . ".\createRSPSshortcut.ps1"
 
-write-host "DPLYRSPOSH`: Finished"
+write-host "DPLYRSPS`: Finished"

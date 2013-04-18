@@ -10,36 +10,12 @@ cls
 
 Write-Host "Loading RightScale cmdlets"
 
-$rsPoshDllPath = 'c:\RSTools\RSPosh\RSPosh.dll'
+$rsPSDllPath = 'c:\RSTools\RSPS\RightScale.netClient.Powershell.dll'
 
-import-module $rsPoshDllPath
-
-#-------------------------------------------------------------
-#FUNCTONS
-#-------------------------------------------------------------
-function ConvertFrom-SecureToPlain {
-    
-    param( [Parameter(Mandatory=$true)][System.Security.SecureString] $SecurePassword)
-    
-    #Create a "password pointer"
-    $PasswordPointer = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($SecurePassword)
-    
-    #Get the plain text version of the password
-    $PlainTextPassword = [Runtime.InteropServices.Marshal]::PtrToStringAuto($PasswordPointer)
-    
-    #Free the pointer
-    [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($PasswordPointer)
-    
-    #Return the plain text password
-    $PlainTextPassword
-    
-}
-
-#-------------------------------------------------------------------
-
+import-module $rsPSDllPath
 
 Write-Host "Logging in to RightScale account - $accountID"
-$session = New-RSSession -username $username -password (ConvertFrom-SecureToPlain $password) -accountid $accountID
+$session = New-RSSession -username $username -password $password -accountid $accountID
 
 if($session -match "Connected")
 {
