@@ -36,16 +36,16 @@ Function Set-RSConsole
 
 }
 
-Set-Location c:\RSTools\RSPosh
+Set-Location c:\RSTools\RSPS
 
-$localRSToolsDir = "c:\RSTools\RSPosh"
-$rsDLLPath = $localRSToolsDir + "\" + "RSPosh.dll"
+$localRSToolsDir = "c:\RSTools\RSPS"
+$rsDLLPath = $localRSToolsDir + "\" + "RSPS.dll"
 
 #RS console settings
 set-RSConsole
 
 # Load RSPosh DLL
-Write-Host "Loading RSPosh DLL - $rsDLLPath"
+Write-Host "Loading RSPS DLL - $rsDLLPath"
 
 try
 {
@@ -53,7 +53,7 @@ try
   
   if(!$?)
   {
-    Write-Host "Could not load RSPosh DLL - $rsDLLPath" -ForegroundColor red
+    Write-Host "Could not load RSPS DLL - $rsDLLPath" -ForegroundColor red
 	Write-Host $error[0]
 	
 	exit
@@ -61,7 +61,7 @@ try
 }
 catch
 {
-  Write-Host "Could not load RSPosh DLL - $rsDLLPath" -ForegroundColor red
+  Write-Host "Could not load RSPS DLL - $rsDLLPath" -ForegroundColor red
   Write-Host "Verify path file exists - $rsDLLPath" -ForegroundColor Red
   Write-Host $_ -ForegroundColor Red
   exit
@@ -82,7 +82,7 @@ WriteConsHeader "To get started with RightScale Powershell Commands`:"
 WriteConsHeader "Connect to RightScale using connect-RightScale -username -password -acctid"
 WriteConsHeader ""
 WriteConsHeader "To list available commands use`:"
-writeConsHeader "get-command -Module RSPosh"
+writeConsHeader "get-command -Module RSPS"
 Write-Host ("*" * ($colwidth + 4))
 Write-Host ""
 Write-Host ""
