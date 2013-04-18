@@ -4,11 +4,11 @@ $gitURL = "https://raw.github.com/patrickmcclory/RightScalePowerShell/master/get
 $dplyRSPosh 	= "deployRSPosh.ps1"
 $dplyRSPoshManifest = "manifest.rsposh.xml"
 
-$srcDply			= $gitURL + "/" + $dplyRSPosh
-$srcDplyManifest	= $gitURL + "/" + $dplyRSPoshManifest
-$destFolder   		= "c:\RSTools\RSPosh"
-$destDplyFile 		= "$destFolder\$dplyRSPosh"
-$destMfstFile 		= "$destFolder\$dplyRSPoshManifest"
+$srcDply			= $gitURL + "/" + $dplyRSPS
+$srcDplyManifest	= $gitURL + "/" + $dplyRSPSManifest
+$destFolder   		= "c:\RSTools\RSPS"
+$destDplyFile 		= "$destFolder\$dplyRSPS"
+$destMfstFile 		= "$destFolder\$dplyRSPSManifest"
 
 
 if(!(Test-Path $destFolder)){New-Item -Path $destFolder -ItemType directory -Force}
@@ -17,7 +17,7 @@ $webclient = New-Object system.Net.WebClient
 
 try
 {
-	write-host "GETRSPOSH`: Downloading deploy RSPosh script - $dplyRSPosh"
+	write-host "GETRSPOSH`: Downloading deploy RSPS script - $dplyRSPosh"
     write-host "GETRSPOSH`: Source path - $srcDply"
 	write-host "GETRSPOSH`: Destination path - $destDplyFile"
 	
@@ -38,7 +38,7 @@ catch [System.Net.WebException]
 
 try
 {
-		write-host "GETRSPOSH`: Downloading RSPosh manifest - $dplyRSPoshManifest"
+		write-host "GETRSPOSH`: Downloading RSPS manifest - $dplyRSPoshManifest"
         write-host "GETRSPOSH`: Source path - $srcDplyManifest"
 		write-host "GETRSPOSH`: Destination path - $destMfstFile"
 
@@ -59,4 +59,4 @@ catch [System.Net.WebException]
 
 
 set-location $destFolder
-. .\$dplyRSPosh
+. .\$dplyRSPS

@@ -6,10 +6,10 @@
         <FILE NAME="Newtonsoft.Json.dll" />
         <FILE NAME="Newtonsoft.Json.xml" />
         <FILE NAME="RightScale.netClient.dll" />
-        <FILE NAME="RSPosh.dll" />
+        <FILE NAME="RightScale.netClient.Powershell.dll" />
       </FILES>
     </REPOSITORY>
-    <REPOSITORY NAME="GITHUB" PATH="https://github.com/patrickmcclory/RightScalePowerShell/raw/master/getRSPosh" >
+    <REPOSITORY NAME="GITHUB" PATH="https://github.com/patrickmcclory/RightScalePowerShell/raw/master/getRSPS" >
       <FILES>
         <FILE NAME="rsps_profile.ps1" />
         <FILE NAME="createRSPSshortcut.ps1" />
