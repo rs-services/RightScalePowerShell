@@ -39,7 +39,7 @@ Function Set-RSConsole
 Set-Location c:\RSTools\RSPS
 
 $localRSToolsDir = "c:\RSTools\RSPS"
-$rsDLLPath = $localRSToolsDir + "\" + "RSPS.dll"
+$rsDLLPath = $localRSToolsDir + "\" + "RightScale.netClient.Powershell.dll"
 
 #RS console settings
 set-RSConsole
