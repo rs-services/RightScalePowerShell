@@ -260,7 +260,16 @@ if($session -match "Connected")
 		{
 		
       		$newServersObj = new-rsserver -servername $newServerName -deploymentid $newDplyID -servertemplate $serverTemplate -cloudid  $dplyCloudID
-	    
+	        
+			if($newServersObj.Result -ne $true)
+			{
+			  Write-Host "Error Creating Server - $($newServersObj.Message)" -ForegroundColor Red
+			  Write-Host "$($newServersObj.APIHref)" -ForegroundColor Red
+			  
+			  continue
+			}
+			
+		    Write-Host "Getting new ServerID"
 			$newServerID = $newServersObj.ServerID
 			
 			#get new server object
