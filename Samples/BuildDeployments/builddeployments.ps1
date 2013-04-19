@@ -1,5 +1,8 @@
+param(
+  [Parameter(Mandatory=$false)]$appendToName = $null
+)
 
-
+Set-Location "C:\Users\michael\Documents\GitHub\RightScalePowerShell\Samples\BuildDeployments"
 #-------------------------------------------------------------
 #FUNCTONS
 #-------------------------------------------------------------
@@ -56,8 +59,8 @@ $rsDefDplyTags = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.TAGS.TAG | ?{$_.scope -e
 $rsDefSrvTags = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.TAGS.TAG | ?{$_.scope -eq "SERVER"}
 
 #get credentials if not in xml file
-if([String]::IsNullOrEmpty($rsAccountID)){$rsAccountID = Read-Host "RightScale Account"}
-if([String]::IsNullOrEmpty($rsAccountUserName)){$rsAccountUserName = Read-Host "RightScale Username"}
+if([String]::IsNullOrEmpty($rsAccountID)){$rsAccountID = Read-Host "RightScale Account"}else{Write-Host "Rightscale Account - $rsAccountID"}
+if([String]::IsNullOrEmpty($rsAccountUserName)){$rsAccountUserName = Read-Host "RightScale Username"}else{Write-Host "Rightscale User - $rsAccountUserName"}
 if([String]::IsNullOrEmpty($rsAccountPwd)){$rsAccountPwd = Read-Host "RightScale Password" -AsSecureString}
 
 #add default inputs and tags
@@ -67,7 +70,7 @@ if($rsDefDplyTags){$rsDefDplyTags | %{$hshDplyTags.add(($_.prefix + "`:" + $_.ta
 if($rsDefSrvTags){$rsDefSrvTags | %{$hshSrvTags.add(($_.prefix + "`:" + $_.tagname),$_.value)}}
 
 Write-Host "Logging in to RightScale account - $rsAccountID"
-$session = New-RSSession -username $rsAccountUserName -password (ConvertFrom-SecureToPlain $rsAccountPwd) -accountid $rsAccountID
+$session = New-RSSession -username $rsAccountUserName -password $rsAccountPwd -accountid $rsAccountID
 
 Write-Host $session
 
@@ -83,6 +86,8 @@ if($session -match "Connected")
 	  	$dplyCloudID	= $deployment.CLOUDID
 		$dplyInputs 	= $deployment.inputs.input
 		$dplyTags 		= $deployment.tags.tag | ?{$_.scope -eq "DEPLOYMENT"}
+		
+		if($appendToName){$dplyName = $dplyName + $appendToName}
 		
    		#build input hash
 		if($dplyInputs.count -gt 0)
@@ -123,6 +128,7 @@ if($session -match "Connected")
 			
   		#create deployment
   		Write-Host "Create Deployment`:  $dplyName"
+        Write-Host "CloudID`: $dplyCloudID"
   
 	  	try
   	  	{
@@ -211,11 +217,7 @@ if($session -match "Connected")
 			Write-Host "Creating Server - $newServerName" 
 			Write-Host "ServerTemplate - $serverTemplate"
 			Write-Host "Cloud ID - $dplyCloudID"
-			
-			#add / update inputs and tags
-			#if($srvInputs.count -gt 0){$srvInputs | %{if($hshInputs.Contains($_.name)){$hshInputs.Remove($_.name)}; $hshInputs.Add($_.name,$_.value)}}
-            #if($srvInputs.count -gt 0){$srvInputs | %{$srvInputs.Add($_.name,$_.value)}}
-            
+    
             #build server tags hash
 			if($srvTags.count -gt 0)
             {
@@ -333,10 +335,12 @@ if($session -match "Connected")
             
 			if($shouldLaunch -eq $true)
 			{
-		  	Write-Host "Launching server"
-		  	$resLaunch = launch-RSServer -serverID $newServerID
-		  
-		  	Write-Host $resLaunch.Message
+		  	  Write-Host "Starting Job to launch server - $newServerName"
+			  $jobNameLaunchServer = "RSLaunchServer-" + $newServerName
+			  Start-Job -Name $jobNameLaunchServer -ScriptBlock {new-rssession -username $args[0] -password $args[1] -accountid $args[2];launch-RSServer -serverID $args[3]} -InitializationScript {Import-Module c:\rstools\rsps\rightscale.netclient.powershell} -ArgumentList @($rsAccountUserName,$rsAccountPwd,$rsAccountID,$newServerID)
+			  $jobsStarted = $true
+		  	  #$resLaunch = launch-RSServer -serverID $newServerID
+		  	  #Write-Host $resLaunch.Message
 			}
 	
 		}
@@ -355,6 +359,29 @@ if($session -match "Connected")
 
 
   
+  }
+  
+  if($jobsStarted)
+  {
+    Write-Host ""
+    Write-Host "Server launch jobs - ID,Name,Status" -ForegroundColor Yellow
+	Write-Host "-----------------------------------------------------" -ForegroundColor Yellow
+	$jobs = get-Job RSLaunch* | select id,name,state
+	$jobs | %{write-host $_.id "`t" $_.name "`t" $_.state}
+	
+	Write-Host""
+	Write-Host "Waiting for jobs to complete" -ForegroundColor Yellow
+	
+	$complete = $false
+	while (-not $complete)
+	{
+		$jobs = get-Job RSLaunch* | select id,name,state
+    	$arrayJobsInProgress = $jobs | ?{ $_.State -match 'running' }
+    	if (-not $arrayJobsInProgress) { "All Jobs Have Completed"; $complete = $true } 
+	}
+	
+	$jobs = get-Job RSLaunch*
+	$jobs | Receive-Job | select ServerID,Result,Message | ft
   }
 }
 else

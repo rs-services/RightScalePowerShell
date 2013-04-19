@@ -79,7 +79,7 @@ Write-Host ("*" * ($colwidth + 4))
 WriteConsHeader "RightScale PowerShell - RightScale .netClient Version $version"
 WriteConsHeader ""
 WriteConsHeader "To get started with RightScale Powershell Commands`:"
-WriteConsHeader "Connect to RightScale using connect-RightScale -username -password -acctid"
+WriteConsHeader "Connect to RightScale using connect-RightScale -username <username> -password <password> -acctid <accountid>"
 WriteConsHeader ""
 WriteConsHeader "To list available commands use`:"
 writeConsHeader "get-command -Module RightScale.netClient.Powershell"
