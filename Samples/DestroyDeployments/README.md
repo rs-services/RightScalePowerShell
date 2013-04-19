@@ -10,10 +10,10 @@ destroyDeployments.ps1
 ----
 Requirements
 ----
--.Net 4.5
--Powershell 3
--Powershell configured to use the lastest runtine
--RightScale.netClient.Powershell and required files - RightScale.netClient.
+- .Net 4.5
+- Powershell 3
+- Powershell configured to use the lastest runtine
+- RightScale.netClient.Powershell and requirements - RightScale.netClient, Newtonsoft.Json.dll,Newtonsoft.Json.xml
 
 -----
  How To Use
