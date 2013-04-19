@@ -1,5 +1,5 @@
 <RSMODEL NAME="APPDEV" SCOPE="QA,STAGE,DEV" DESCRIPTION="Create 2 Deplyoments">
-  <RIGHTSCALE  ACCOUNT="58765"  USERNAME="michael.peterson@rightscale.com" PASSWORD="" />
+  <RIGHTSCALE  ACCOUNT=""  USERNAME="" PASSWORD="" />
   <DEPLOYMENTS>
     <DEFAULTS>
       <INPUTS>
