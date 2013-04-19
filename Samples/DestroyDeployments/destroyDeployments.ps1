@@ -22,12 +22,26 @@ if($session -match "Connected")
 	Write-Host "Connected to RightScale"
 	
 	Write-Host "Getting Deployments"
-	$deploys  = get-RSDeployments
-    
+	try
+	{
+	  $deploys  = get-RSDeployments
+    }
+	catch
+	{
+	  Write-Host "Error getting deployments - $_"
+	}
     $dplysFiltered = @($deploys | ?{$_.name -match "Model"} )
     
     write-host "Found $($dplysFiltered.count) Deployment(s) matching - $($namefilter)"
     write-host "-----------------------------------------------"
+	
+	if($dplysFiltered.count -lt 1)
+	{
+	  Write-Host ""
+	  Write-Host "No Deployments found matching - $($namefilter)"
+	  exit	
+	}
+	
     $dplysFiltered | %{
       $dplyServers = $_.servers | select name,state,id
       write-host "Deployment`: $($_.name)" -foregroundcolor yellow
