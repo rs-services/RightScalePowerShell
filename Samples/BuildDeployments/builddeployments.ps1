@@ -59,8 +59,8 @@ $rsDefDplyTags = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.TAGS.TAG | ?{$_.scope -e
 $rsDefSrvTags = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.TAGS.TAG | ?{$_.scope -eq "SERVER"}
 
 #get credentials if not in xml file
-if([String]::IsNullOrEmpty($rsAccountID)){$rsAccountID = Read-Host "RightScale Account"}else{Write-Host "Rightscale Account - $rsAccountID"}
-if([String]::IsNullOrEmpty($rsAccountUserName)){$rsAccountUserName = Read-Host "RightScale Username"}else{Write-Host "Rightscale User - $rsAccountUserName"}
+if([String]::IsNullOrEmpty($rsAccountID)){$rsAccountID = Read-Host "RightScale Account"}else{Write-Host "Rightscale Account (from config file) - $rsAccountID"}
+if([String]::IsNullOrEmpty($rsAccountUserName)){$rsAccountUserName = Read-Host "RightScale Username"}else{Write-Host "Rightscale User (from config file) - $rsAccountUserName"}
 if([String]::IsNullOrEmpty($rsAccountPwd)){$rsAccountPwd = Read-Host "RightScale Password" -AsSecureString}
 
 #add default inputs and tags
@@ -381,7 +381,7 @@ if($session -match "Connected")
 	}
 	
 	$jobs = get-Job RSLaunch*
-	$jobs | Receive-Job | select ServerID,Result,Message | ft
+	$jobs | Receive-Job | select ServerID,Result,Message
   }
 }
 else

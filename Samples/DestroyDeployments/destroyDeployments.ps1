@@ -30,7 +30,7 @@ if($session -match "Connected")
 	{
 	  Write-Host "Error getting deployments - $_"
 	}
-    $dplysFiltered = @($deploys | ?{$_.name -match "Model"} )
+    $dplysFiltered = @($deploys | ?{$_.name -match $namefilter} )
     
     write-host "Found $($dplysFiltered.count) Deployment(s) matching - $($namefilter)"
     write-host "-----------------------------------------------"
@@ -44,10 +44,20 @@ if($session -match "Connected")
 	
     $dplysFiltered | %{
       $dplyServers = $_.servers | select name,state,id
+	  
       write-host "Deployment`: $($_.name)" -foregroundcolor yellow
-      write-host "Servers`:"
-      write-output $dplyServers | ft -hide
-      write-host ""
+	  
+	  if($dplyServers)
+	  {
+        write-host "Servers`:"
+        write-output $dplyServers | ft -hide
+        write-host ""
+	  }
+	  else
+	  {
+	    Write-Host "No Servers"
+		Write-Host ""
+	  }
     }
     
     #Confirm destroying
