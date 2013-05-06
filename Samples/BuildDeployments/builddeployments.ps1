@@ -51,6 +51,7 @@ $hshDplyInputs = @{}
 $hshSrvInputs = @{}
 $hshDplyTags = @{}
 $hshSrvTags = @{}
+$scriptErrors = @()
 
 #get default inputs
 $rsDefDplyInputs = $mdlBuild.RSMODEL.DEPLOYMENTS.DEFAULTS.INPUTS.INPUT | ?{$_.scope -eq "DEPLOYMENT"}
@@ -266,6 +267,14 @@ if($session -match "Connected")
 			  Write-Host "Error Creating Server - $($newServersObj.Message)" -ForegroundColor Red
 			  Write-Host "$($newServersObj.APIHref)" -ForegroundColor Red
 			  
+			  $errMessage = "$newServerName - Error creating server" + [System.Environment]::NewLine
+			  $errMessage += "`t $($newServersObj.Message)" + [System.Environment]::NewLine
+			  $errMessage += "`t $($newServersObj.ErrData)" + [System.Environment]::NewLine
+			  $errMessage += "`t $($newServersObj.APIHref)" + [System.Environment]::NewLine
+			  $errMessage +=  [System.Environment]::NewLine
+			  
+			  $scriptErrors += $errMessage
+			  
 			  continue
 			}
 			
@@ -358,12 +367,13 @@ if($session -match "Connected")
 	  		Write-Error "$_"
 	  		Write-Error $_.errordata
 	  		Write-Error $_.Exception.InnerException.Message
+			
+			$scriptErrors += "$newServerName - Error launching server - $($_.errordata)"
 
 		}	
 	
 	
-  }
-  
+    }  
 #endregion
 
 
@@ -399,3 +409,16 @@ else
   exit 1
 }
 
+#any errors
+if($scriptErrors.count -gt 0)
+{
+  Write-Host ""
+  Write-Host ""
+  Write-Host "ERRORS`:" -ForegroundColor Yellow
+  Write-Host "----------------------------------------------------------------"
+  foreach($err in $scriptErrors)
+  {
+    Write-Host $err -ForegroundColor Yellow
+  }
+
+}
