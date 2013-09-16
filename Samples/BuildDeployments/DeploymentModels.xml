@@ -11,7 +11,7 @@
         <TAG SCOPE="SERVER" PREFIX="df"  TAGNAME="defsrvtag"  VALUE="defsrvtagvalue" />
       </TAGS>
     </DEFAULTS>
-    <DEPLOYMENT  ENV="STAGE" NAME="ModelDeployment-4T" CLOUDID="2178"  DESCRIPTION="Scripted Deployment 4T" >
+    <DEPLOYMENT  ENV="STAGE" NAME="ModelDeployment-4T-2" CLOUDID="2178"  DESCRIPTION="Scripted Deployment 4T" >
 	<CREDENTIALS>
 	  <CREDENTIAL NAME="" PASSWORD="" />
 	</CREDENTIALS>
@@ -36,7 +36,7 @@
 	  <SERVER MODELID="4"  NAME="04-ModDplySrvWeb01" TIER="Web" SERVERTEMPLATE="296494001" LAUNCH="FALSE" LAUNCHWAIT="2,3" DESCRIPTION="Model Deployment 4T IIS Web Server"  />	
   	</SERVERS>
     </DEPLOYMENT>
-    <DEPLOYMENT  ENV="DEV" NAME="ModelDeployment-AIO" CLOUDID="2178" DESCRIPTION="Scripted Deployment AIO" >
+    <DEPLOYMENT  ENV="DEV" NAME="ModelDeployment-AIO-2" CLOUDID="2178" DESCRIPTION="Scripted Deployment AIO" >
 	<CREDENTIALS>
 	  <CREDENTIAL NAME="" PASSWORD="" />
 	</CREDENTIALS>

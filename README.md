@@ -15,4 +15,4 @@ Let us know if there's something specific you're looking for, if the code is hel
 
 Best,
 
-Patrick and the RightScale Windows Professional Services Team
+RightScale Windows Professional Services Team

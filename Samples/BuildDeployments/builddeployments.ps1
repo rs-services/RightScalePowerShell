@@ -2,10 +2,163 @@ param(
   [Parameter(Mandatory=$false)]$appendToName = $null
 )
 
-Set-Location "C:\Users\michael\Documents\GitHub\RightScalePowerShell\Samples\BuildDeployments"
+#------------------------------------------------------
+#TODO:  
+#------------------------------------------------------
+#Server count for multiple servers of same settings
+#get dll path to load dynamically,  if .net installed
+#param for model file path / name to process
+#delay in launching for rs to catchup,  server failed to launch right away but then launched fine
+#dependencies for launching
+#scriptblock for launch job
+
 #-------------------------------------------------------------
 #FUNCTONS
 #-------------------------------------------------------------
+#----------------------------------------------------------------------------------
+#Util Globals
+#----------------------------------------------------------------------------------
+$script:scriptfullname 		= $MyInvocation.scriptname
+$script:scriptname 			= Split-Path $scriptfullname -Leaf
+$script:scriptpath			= Split-Path $scriptfullname -Parent
+$script:dt_logfile			= get-date -format "yyyyMMdd_hhmm"
+$script:logpath				= $scriptpath + "\" + "Logs"
+$script:logfile				= "$logpath`\$scriptname" + "_" + $dt_logfile + ".log"
+$script:iLogWrite			= $false
+$script:hshErrs				= @{}
+#$script:evtlogname			= "RSScriptQA"
+#$script:evtlogsource		= "RSScriptQA"
+
+#----------------------------------------------------------------------------------
+#FUNCTION BEGIN:  LogEntry
+#DESCRIPTION:  Write-Host add log enteries after log file is created
+#TODO:  add event log and write to that also
+#PARAMS: $scriptlocation $msg $msgLevel $evt $evtNum
+#----------------------------------------------------------------------------------
+function LogEntry
+  {
+    param([string]$scriptlocation = "NULL", [string]$msg, [string]$msgLevel = "INFO", $evt = $null, $evtNum = $null)
+
+	$functionName	= "LOGENTRY"	
+	$script:now 	= get-date -format "yyyyMMdd:hh:mm"
+	$msg			= $msg.substring(0, [System.Math]::Min($msg.Length, 5000))
+	$logmsg			= $now + ': ' + $scriptlocation + " - " + $msg
+
+	
+	switch($msgLevel)
+	  {
+	    "INFO"
+			{$foregroundcolor	= "white"
+			 $infoevent	= [System.Diagnostics.EventLogEntryType]::Information
+			}
+	    "WARNING"
+			{$foregroundcolor	= "yellow"
+			 $infoevent	= [System.Diagnostics.EventLogEntryType]::Warning
+			}
+	    "ERROR"
+			{$foregroundcolor	= "red"
+			 $infoevent	= [System.Diagnostics.EventLogEntryType]::Error
+			}
+	    "DEBUG"
+			{$foregroundcolor	= "green"
+			 $infoevent	= [System.Diagnostics.EventLogEntryType]::Information
+			}
+	  }
+
+	if(!$foregroundcolor){$foregroundcolor = "cyan"}
+
+	write-host $logmsg -foregroundcolor $foregroundcolor
+
+	if($iLogWrite)
+	{
+	  add-content $logfile $logmsg
+	}
+	
+	if($msgLevel -ieq "ERROR")
+	{
+	  $thisErrMsg = $scriptlocation + "`: " + $msg	# + "-" + $global:errnum
+	  
+	  if(!$hshErrs.containsvalue($thisErrMsg))
+	    {
+		  $hshErrs.add($script:errnum, $thisErrMsg)		  
+		  $script:errnum = $script:errnum + 1	
+		}
+	}
+	
+	if($evt)
+	{	
+		if(![System.Diagnostics.EventLog]::SourceExists($evtlogname))
+		{		  
+		  #-----Create Event Log and set props
+		  New-EventLog -LogName $evtlogname -Source $evtlogname		  
+		  $thisevtlog = New-Object system.Diagnostics.EventLog($evtlogname)
+		  $thisevtlog.ModifyOverflowPolicy([System.Diagnostics.OverflowAction]::OverwriteAsNeeded,0)
+		  $thisevtlog.MaximumKilobytes = 2194240
+		  
+		  LogEntry -scriptlocation "CREATEEVENTLOG" -msg "Created event log - $evtlogname" -msgLevel "INFO" -evt $true -evtNum 250
+		}
+		
+		$evtentry			= new-object System.Diagnostics.EventLog($evtlogname)
+		$evtentry.Source	= $evtlogsource	
+		
+
+		$evtentry.WriteEntry($logmsg, $infoevent, $evtNum, 2)
+		
+		$msg = $null
+	}
+  }
+#----------------------------------------------------------------------------------
+#FUNCTION END:  LogEntry
+#----------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------
+#FUNCTION START:  CreateLog
+#----------------------------------------------------------------------------------
+function CreateLog
+{
+	#create log file and switch logging to write log entries
+		
+	LogEntry -scriptlocation "LOG" -msg "Creating new log file - $logfile" -msgLevel "INFO" -evt $true -evtNum 4000
+
+	#check of log dir exists
+	$logdir = Split-Path -Path $logfile -Parent
+	if(Test-Path -Path $logdir)
+	{
+		LogEntry -scriptlocation "LOG" -msg "Log Directory`: Found $logdir" -msgLevel "INFO" -evt $true -evtNum 4000		
+	}
+	else
+	{	
+		LogEntry -scriptlocation "LOG" -msg "Log Directory`: $logdir not found - creating" -msgLevel "INFO" -evt $true -evtNum 4000
+		New-Item $logdir -ItemType Directory
+	}
+	
+	if(test-path $logfile)
+	  {
+		LogEntry "CREATELOG" "Renaming existing log file - $logfile" "INFO" $true 4101
+		
+		$ext = Get-Date -format 'yyyyMMddhhmmss'
+		$archlogfile = $scriptname + "_" + $ext + ".log"
+		
+		rename-item $logfile $archlogfile
+		
+		LogEntry "CREATELOG" "Log file created - $logfile" "INFO" $true 4102
+		
+		$script:iLogWrite = $true
+	  }
+	else
+	  {	
+	  
+		add-content -path $logfile "Starting new log"
+		LogEntry "CREATELOG" "Log file created - $logfile" "INFO" $true 4103
+		
+		$script:iLogWrite = $true
+		
+	  }
+}
+
+#----------------------------------------------------------------------------------
+#FUNCTION END:  CreateLog
+#----------------------------------------------------------------------------------
 function ConvertFrom-SecureToPlain {
     
     param( [Parameter(Mandatory=$true)][System.Security.SecureString] $SecurePassword)
@@ -24,21 +177,30 @@ function ConvertFrom-SecureToPlain {
     
 }
 
-#-------------------------------------------------------------------
+#-------------------------------------------------------------
 
+#-------------------------------------------------------------
+#VARS
+#-------------------------------------------------------------
+$rsPoshDllPath = 'C:\Program Files (x86)\RightScale\PowerShell\RightScale.netClient.Powershell.dll'
+$rsModelFile = "deploymentModels.xml"
 
 cls
 
 Write-Host "Loading RightScale cmdlets"
 
-$rsPoshDllPath = 'c:\RSTools\RSPS\RightScale.netClient.Powershell.dll'
 
+#-------------------------------------------------------------
+#LOAD MODULES
+#-------------------------------------------------------------
 import-module $rsPoshDllPath
+#-------------------------------------------------------------
 
-$rsModelFile = "deploymentModels.xml"
+#-------------------------------------------------------------
+#MAIN
+#-------------------------------------------------------------
 
 [xml]$mdlBuild  = gc .\$rsModelFile
-
 if(!$mdlBuild){Write-Host "Error loading model file - $rsModelFIle";exit 1}
 
 #get rs creds
@@ -355,7 +517,8 @@ if($session -match "Connected")
 			{
 		  	  Write-Host "Starting Job to launch server - $newServerName"
 			  $jobNameLaunchServer = "RSLaunchServer-" + $newServerName
-			  Start-Job -Name $jobNameLaunchServer -ScriptBlock {new-rssession -username $args[0] -password $args[1] -accountid $args[2];launch-RSServer -serverID $args[3]} -InitializationScript {Import-Module c:\rstools\rsps\rightscale.netclient.powershell} -ArgumentList @($rsAccountUserName,$rsAccountPwd,$rsAccountID,$newServerID)
+			  Start-Job -Name $jobNameLaunchServer -ScriptBlock {new-rssession -username $args[0] -password $args[1] -accountid $args[2];launch-RSServer -serverID $args[3]} -InitializationScript {Import-Module 'C:\Program Files (x86)\RightScale\PowerShell\RightScale.netClient.Powershell.dll'} -ArgumentList @($rsAccountUserName,$rsAccountPwd,$rsAccountID,$newServerID)
+
 			  $jobsStarted = $true
 		  	  #$resLaunch = launch-RSServer -serverID $newServerID
 		  	  #Write-Host $resLaunch.Message

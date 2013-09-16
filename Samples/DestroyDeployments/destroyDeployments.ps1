@@ -10,7 +10,7 @@ cls
 
 Write-Host "Loading RightScale cmdlets"
 
-$rsPSDllPath = 'c:\RSTools\RSPS\RightScale.netClient.Powershell.dll'
+$rsPSDllPath = $rsPoshDllPath = 'C:\Program Files (x86)\RightScale\PowerShell\RightScale.netClient.Powershell.dll'
 
 import-module $rsPSDllPath
 
